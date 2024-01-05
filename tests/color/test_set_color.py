@@ -90,6 +90,3 @@ def test_set_color_entity_not_found(client, app, set_color_url):
         assert response.status_code == 404
         assert 'Entity not found' in response.json['error']
 
-# Additional tests for invalid color data can be added similarly
-
-# Replace 'color' with the actual package name.

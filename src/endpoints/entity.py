@@ -4,6 +4,9 @@ from flask import Blueprint, request, jsonify, current_app
 from ..util.has_cyclic_relationship import has_cyclic_relationship
 from ..models import Entity, LightState
 from ..database import db
+import gc
+from sqlalchemy import inspect
+
 
 entity_bp = Blueprint('entity', __name__)
 
@@ -174,18 +177,19 @@ def delete_entity(data):
     if not entity_id:
         return jsonify({"error": "Missing data"}), 400
 
-    # Fetching the entity to be deleted
-    entity = Entity.query.filter_by(id=entity_id).first()
-    if not entity:
-        return jsonify({"error": "Entity not found"}), 404
+
 
     # Deleting the entity from the database
     with current_app.app_context():
+        # Fetching the entity to be deleted
+        entity = Entity.query.filter_by(id=entity_id).first()
+        if not entity:
+            return jsonify({"error": "Entity not found"}), 404
         db.session.delete(entity)
         db.session.commit()
 
     # Return a success response after deleting the entity
-    return jsonify({"success": "Entity deleted successfully"}), 200
+        return jsonify({"success": "Entity deleted successfully"}), 200
 
 def get_entities():
     """
