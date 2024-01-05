@@ -5,7 +5,7 @@ from ...src.endpoints.entity import delete_entity
 
 @pytest.fixture
 def app():
-    app = create_app('testing')  # Replace 'testing' with the appropriate config name if different
+    app = create_app() 
     with app.app_context():
         db.create_all()
     yield app
