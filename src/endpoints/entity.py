@@ -67,16 +67,6 @@ def create_entity(data):
     if None in (name, start_addr, end_addr):
         return jsonify({"error": "Missing data"}), 400
 
-    # Check for parent entity if parent_id is provided
-    if parent_id:
-        parent_entity = Entity.query.filter_by(id=parent_id).first()
-        if not parent_entity:
-            return jsonify({"error": "Parent entity not found"}), 404
-
-        # Validate to avoid cyclic relationships in the entity hierarchy
-        if has_cyclic_relationship(parent_entity.id, parent_id):
-            return jsonify({"error": "Invalid parent entity: cyclic relationship detected"}), 400
-
     # Creating a new entity with the given details
     new_entity = Entity(name=name, start_addr=start_addr, end_addr=end_addr, parent_id=parent_id)
 
@@ -88,6 +78,20 @@ def create_entity(data):
     # Fetch the newly created entity for confirmation
     entity = Entity.query.filter_by(name=name).order_by(Entity.id.desc()).first()
 
+    # Check for parent entity if parent_id is provided
+    if entity.parent_id:
+        parent_entity = Entity.query.filter_by(id=parent_id).first()
+        if not parent_entity:
+            entity.parent_id = None
+            db.session.commit()
+            return jsonify({"warning": "Entity was created, but parent entity not found, parent_entity now blank."}), 201
+
+        # Validate to avoid cyclic relationships in the entity hierarchy
+        if has_cyclic_relationship(entity.id, parent_id, is_first_call=True):
+            entity.parent_id = None
+            db.session.commit()
+            return jsonify({"warning": "Entity was created, but there is an invalid parent entity: cyclic relationship detected, parent_entity now blank"}), 201
+
     # Create a default light state for the new entity
     new_state = LightState(entity_id=entity.id, is_on=False, red=0, green=0, blue=0, brightness=0)
 
@@ -97,7 +101,10 @@ def create_entity(data):
         db.session.commit()
 
     # Return a success response with the new entity's ID
-    return jsonify({"success": "Entity created successfully", "id": entity.id}), 200
+    if entity.id:
+        return jsonify({"success": "Entity created successfully", "id": entity.id}), 201
+    else:
+        return jsonify({"error": "Entity creation failed"}), 400
 
 def update_entity(data):
     """
@@ -139,7 +146,7 @@ def update_entity(data):
                 return jsonify({"error": "Parent entity not found"}), 404
 
             # Check for cyclic relationship
-            if has_cyclic_relationship(entity_id, parent_entity.id):
+            if has_cyclic_relationship(entity_id, parent_entity.id, is_first_call=True):
                 return jsonify({"error": "Invalid parent entity: cyclic relationship detected"}), 400
 
             entity.parent_id = parent_id

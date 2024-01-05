@@ -27,7 +27,7 @@ def test_manage_entity_post(client, app):
             'parent_id': None
         }
         response = client.post(url_for('entity.manage_entity'), data=json.dumps(data), content_type='application/json')
-        assert response.status_code == 200
+        assert response.status_code == 201
         assert 'Entity created successfully' in response.json['success']
 
 def test_manage_entity_put(client, app):

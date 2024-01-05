@@ -1,6 +1,7 @@
 from ..models import Entity
+from flask import current_app
 
-def has_cyclic_relationship(start_id, current_id):
+def has_cyclic_relationship(start_id, current_id, is_first_call=True):
     """
     Checks for a cyclic relationship in the entity hierarchy.
 
@@ -11,21 +12,26 @@ def has_cyclic_relationship(start_id, current_id):
     Returns:
     bool: True if a cyclic relationship is detected, False otherwise.
     """
-
-    # If the start ID matches the current ID, a cycle is detected
-    if start_id == current_id:
-        return True
-
+    print(start_id, current_id, is_first_call)
+    is_cycle = False
+    # If it's not the first call and the start ID matches the current ID, a cycle is detected
+    start_entity = Entity.query.filter_by(id=start_id).first()
+    
     # Fetch the current entity by its ID
     current_entity = Entity.query.filter_by(id=current_id).first()
-    print(current_entity.id)
 
-    if current_entity.parent is None or current_entity.parent.parent is None:
+    print('start_entity, current_entity, current_entity.parent_id')
+    print(start_entity.id, current_entity.id, current_entity.parent_id)
+
+    if current_entity.parent_id is None:
         return False
+    
+    if current_entity.parent_id == current_entity.id:
+        return True
+   
+    if current_entity.parent_id == start_entity.id:
+        return True
 
-    # If the current entity exists and has a parent, continue traversing the hierarchy
-    if current_entity and current_entity.parent:
-        return has_cyclic_relationship(start_id, current_entity.parent.id)
-
-    # If no cycle is detected, return False
-    return False
+    # Continue traversing the hierarchy
+    if is_cycle is False:
+        return has_cyclic_relationship(start_id, current_entity.parent_id, is_first_call=False)
