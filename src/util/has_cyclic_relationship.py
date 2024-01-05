@@ -19,7 +19,7 @@ def has_cyclic_relationship(start_id, current_id):
     # Fetch the current entity by its ID
     current_entity = Entity.query.filter_by(id=current_id).first()
 
-    if current_entity.parent.parent is None:
+    if current_entity.parent is None or current_entity.parent.parent is None:
         return False
 
     # If the current entity exists and has a parent, continue traversing the hierarchy

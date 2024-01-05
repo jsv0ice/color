@@ -47,3 +47,13 @@ def test_has_cyclic_relationship_with_cycle(app, init_entities):
 def test_has_cyclic_relationship_same_entity(app, init_entities):
     with app.app_context():
         assert has_cyclic_relationship(init_entities[0], init_entities[0])
+
+def test_has_cyclic_relationship_with_none_parent(app, init_entities):
+    with app.app_context():
+        # Create an entity with no parent
+        orphan_entity = Entity(id=4, name="Orphan", start_addr=11, end_addr=20, parent_id=None)
+        db.session.add(orphan_entity)
+        db.session.commit()
+
+        # Test the function with an entity that has a None parent
+        assert not has_cyclic_relationship(orphan_entity.id, init_entities[0])
