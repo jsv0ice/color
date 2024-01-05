@@ -54,7 +54,7 @@ def test_set_color_valid(client, init_entity, app, set_color_url):
             'red': 255,
             'green': 100,
             'blue': 50,
-            'brightness': 200,
+            'brightness': 100,
             'is_on': 'true'
         }
         response = client.post(set_color_url, data=json.dumps(data), content_type='application/json')

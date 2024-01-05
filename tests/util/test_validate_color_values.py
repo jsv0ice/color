@@ -2,7 +2,7 @@ import pytest
 from ...src.util.validate_color_values import validate_color_values  # Replace 'your_module' with the actual module name
 
 def test_validate_color_values_valid():
-    assert validate_color_values(255, 100, 50, 200) == (True, "")
+    assert validate_color_values(255, 100, 50, 100) == (True, "")
 
 def test_validate_color_values_invalid_rgb():
     assert validate_color_values(256, 100, 50, 200)[0] == False
