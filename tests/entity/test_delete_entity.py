@@ -1,7 +1,7 @@
 import pytest
-from src import create_app, db
-from src.models import Entity
-from src.endpoints.entity import delete_entity
+from ...src import create_app, db
+from ...src.models import Entity
+from ...src.endpoints.entity import delete_entity
 
 @pytest.fixture
 def app():

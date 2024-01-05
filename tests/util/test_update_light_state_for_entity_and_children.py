@@ -1,7 +1,7 @@
 import pytest
-from src import create_app, db
-from src.models import Entity, LightState
-from src.util.update_light_state_for_entity_and_children import update_light_state_for_entity_and_children
+from ...src import create_app, db
+from ...src.models import Entity, LightState
+from ...src.util.update_light_state_for_entity_and_children import update_light_state_for_entity_and_children
 
 @pytest.fixture
 def app():

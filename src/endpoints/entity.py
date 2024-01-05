@@ -1,7 +1,7 @@
 # src/endpoints/entity.py
 
 from flask import Blueprint, request, jsonify, current_app
-from util.has_cyclic_relationship import has_cyclic_relationship
+from ..util.has_cyclic_relationship import has_cyclic_relationship
 from ..models import Entity, LightState
 from .. import db
 

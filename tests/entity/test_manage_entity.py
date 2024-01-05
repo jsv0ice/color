@@ -1,8 +1,8 @@
 import pytest
 import json
 from flask import url_for
-from src import create_app, db
-from src.models import Entity
+from ...src import create_app, db
+from ...src.models import Entity
 
 @pytest.fixture
 def app():

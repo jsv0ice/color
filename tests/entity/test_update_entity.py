@@ -1,8 +1,8 @@
 import pytest
 from flask import jsonify
-from src import create_app, db
-from src.models import Entity
-from src.endpoints.entity import update_entity
+from ...src import create_app, db
+from ...src.models import Entity
+from ...src.endpoints.entity import update_entity
 
 @pytest.fixture
 def app():

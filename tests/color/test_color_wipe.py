@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import Mock, call
-from src.endpoints.color import colorWipe
+from ...src.endpoints.color import colorWipe
 
 def test_colorWipe():
     # Create a mock strip object

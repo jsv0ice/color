@@ -1,9 +1,9 @@
 import pytest
 import json
 from flask import url_for
-from src import create_app, db  # Update the import path
-from src.models import Entity, LightState  # Update the import path
-from src.endpoints.color import set_color  # Update the import path
+from ...src import create_app, db  # Update the import path
+from ...src.models import Entity, LightState  # Update the import path
+from ...src.endpoints.color import set_color  # Update the import path
 
 @pytest.fixture
 def app():

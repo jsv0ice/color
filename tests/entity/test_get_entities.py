@@ -1,8 +1,8 @@
 import pytest
 from flask import jsonify
-from src import create_app, db
-from src.models import Entity, LightState
-from src.endpoints.entity import get_entities
+from ...src import create_app, db
+from ...src.models import Entity, LightState
+from ...src.endpoints.entity import get_entities
 
 @pytest.fixture
 def app():

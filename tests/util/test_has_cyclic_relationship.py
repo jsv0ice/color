@@ -1,6 +1,6 @@
 import pytest
-from src import create_app, db
-from src.models import Entity
+from ...src import create_app, db
+from ...src.models import Entity
 
 @pytest.fixture
 def app():
