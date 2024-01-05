@@ -1,12 +1,12 @@
-from flask import current_app
-from rpi_ws281x import PixelStrip, ws
+
 from src import create_app
 from src.endpoints.entity import entity_bp
 from src.endpoints.color import color_bp
+from flask import Flask ,current_app
+from rpi_ws281x import PixelStrip, ws
 
 app = create_app()
-app.register_blueprint(entity_bp, url_prefix='/entity')
-app.register_blueprint(color_bp, url_prefix='/color')
+
 
 def initialize_led_strip():
     # Access the configuration from current_app.config
@@ -24,10 +24,10 @@ def initialize_led_strip():
     strip.begin()
     return strip
 
+
 if __name__ == '__main__':
     with app.app_context():
-        # Initialize the LED strip within the app context
-        strip = initialize_led_strip()
+        app.strip = initialize_led_strip()
 
     # Run the Flask app
     app.run(debug=True, host='0.0.0.0')

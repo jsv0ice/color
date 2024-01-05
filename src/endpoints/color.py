@@ -5,7 +5,7 @@ from rpi_ws281x import Color
 from ..util.update_light_state_for_entity_and_children import update_light_state_for_entity_and_children
 from ..util.validate_color_values import validate_color_values
 from ..models import Entity, LightState
-from .. import db
+from ..database import db
 
 
 color_bp = Blueprint('color', __name__)

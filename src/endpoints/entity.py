@@ -3,7 +3,7 @@
 from flask import Blueprint, request, jsonify, current_app
 from ..util.has_cyclic_relationship import has_cyclic_relationship
 from ..models import Entity, LightState
-from .. import db
+from ..database import db
 
 entity_bp = Blueprint('entity', __name__)
 

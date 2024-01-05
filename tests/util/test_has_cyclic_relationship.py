@@ -1,6 +1,7 @@
 import pytest
 from ...src import create_app, db
 from ...src.models import Entity
+from ...src.util import has_cyclic_relationship
 
 @pytest.fixture
 def app():
@@ -18,9 +19,9 @@ def client(app):
 @pytest.fixture
 def init_entities(app):
     with app.app_context():
-        entity1 = Entity(id=1, name="Entity1", parent_id=None)
-        entity2 = Entity(id=2, name="Entity2", parent_id=1)
-        entity3 = Entity(id=3, name="Entity3", parent_id=2)
+        entity1 = Entity(id=1, name="Entity1", start_addr=1, end_addr=10, parent_id=None)
+        entity2 = Entity(id=2, name="Entity2", start_addr=1, end_addr=10, parent_id=1)
+        entity3 = Entity(id=3, name="Entity3", start_addr=1, end_addr=10, parent_id=2)
         db.session.add(entity1)
         db.session.add(entity2)
         db.session.add(entity3)

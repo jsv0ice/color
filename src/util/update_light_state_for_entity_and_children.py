@@ -1,5 +1,5 @@
 from ..models import Entity, LightState
-from .. import db
+from ..database import db
 
 def update_light_state_for_entity_and_children(entity_id, red, green, blue, brightness, is_on):
     """

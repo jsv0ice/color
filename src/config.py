@@ -1,6 +1,9 @@
 # src/config.py
 
 class Config:
+    SERVER_NAME = '0.0.0.0:5000'
+    APPLICATION_ROOT = '/'
+    PREFERRED_URL_SCHEME = 'http'
     LED_PIN = 18
     LED_INVERT = False
     LED_CHANNEL = 0
