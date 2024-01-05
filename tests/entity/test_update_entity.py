@@ -38,7 +38,7 @@ def test_update_entity_valid_data(app, init_entity):
         response = update_entity(updated_data)
         assert response[1] == 200
         assert 'Entity updated successfully' in response[0].json['success']
-
+        db.session.expunge_all()
         updated_entity = db.session.get(Entity, entity.id)
         assert updated_entity.name == 'Updated Entity'
         assert updated_entity.start_addr == 150

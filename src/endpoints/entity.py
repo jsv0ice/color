@@ -126,34 +126,43 @@ def update_entity(data):
     if None in (entity_id, name, start_addr, end_addr):
         return jsonify({"error": "Missing data"}), 400
 
-    # Fetching the entity to be updated
-    entity = Entity.query.filter_by(id=entity_id).first()
-    if not entity:
-        return jsonify({"error": "Entity not found"}), 404
+    with current_app.app_context():
+        # Fetching the entity to be updated
+        entity = Entity.query.filter_by(id=entity_id).first()
+        if not entity:
+            return jsonify({"error": "Entity not found"}), 404
 
-    # Update parent_id only if parent_id is provided
-    if parent_id:
-        parent_entity = Entity.query.filter_by(id=parent_id).first()
-        if not parent_entity:
-            return jsonify({"error": "Parent entity not found"}), 404
+        # Update parent_id only if parent_id is provided
+        if parent_id:
+            parent_entity = Entity.query.filter_by(id=parent_id).first()
+            if not parent_entity:
+                return jsonify({"error": "Parent entity not found"}), 404
 
-        # Check for cyclic relationship
-        if has_cyclic_relationship(entity_id, parent_entity.id):
-            return jsonify({"error": "Invalid parent entity: cyclic relationship detected"}), 400
+            # Check for cyclic relationship
+            if has_cyclic_relationship(entity_id, parent_entity.id):
+                return jsonify({"error": "Invalid parent entity: cyclic relationship detected"}), 400
 
-        entity.parent_id = parent_id
-    else:
-        # If parent_id is not provided, set parent_id to None
-        entity.parent_id = None
+            entity.parent_id = parent_id
+        else:
+            # If parent_id is not provided, set parent_id to None
+            entity.parent_id = None
 
-    # Updating the entity details
-    entity.name = name
-    entity.start_addr = start_addr
-    entity.end_addr = end_addr
+        # Updating the entity details
+        entity.name = name
+        entity.start_addr = start_addr
+        entity.end_addr = end_addr
+        print("B: " + str(entity.name))
 
     # Committing the updates to the database
-    with current_app.app_context():
         db.session.commit()
+
+        updated_entity = Entity.query.filter_by(id=entity_id).first()
+        print("A: " + str(updated_entity.name))
+
+        if updated_entity.name != entity.name:
+            return jsonify({"error": "Entity update failed"}), 400
+        
+        db.session.expunge_all()
 
     # Return a success response after updating the entity
     return jsonify({"success": "Entity updated successfully"}), 200
