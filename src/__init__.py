@@ -13,8 +13,8 @@ from .database import db
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    app.register_blueprint(entity_bp, url_prefix='/entity')
-    app.register_blueprint(color_bp, url_prefix='/color')
+    app.register_blueprint(entity_bp, url_prefix='')
+    app.register_blueprint(color_bp, url_prefix='')
 
     db.init_app(app)
 
