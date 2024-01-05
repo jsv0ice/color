@@ -1,7 +1,7 @@
 # src/config.py
 
 class Config:
-    SERVER_NAME = '0.0.0.0:5000'
+    SERVER_NAME = '10.0.0.71:5000'
     APPLICATION_ROOT = '/'
     PREFERRED_URL_SCHEME = 'http'
     LED_PIN = 18
