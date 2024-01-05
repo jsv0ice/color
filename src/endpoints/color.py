@@ -27,7 +27,7 @@ def set_color():
     green = int(data.get('green'))
     blue = int(data.get('blue'))
     brightness = int(data.get('brightness'))
-    is_on = data.get('is_on') == 'true'  # Convert to boolean
+    is_on = data.get('is_on')
 
     # Validate entity presence
     if entity_id is None:
@@ -62,7 +62,10 @@ def set_color():
         db.session.commit()
 
     # Apply the color to the LED strip
-    colorWipe(current_app.strip, Color(red, green, blue), int(brightness/2.55), entity.start_addr, entity.end_addr)
+    if is_on:
+        colorWipe(current_app.strip, Color(red, green, blue), int(brightness/2.55), entity.start_addr, entity.end_addr)
+    else:
+        colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
     return jsonify({"success": "Color updated successfully"}), 200
 
 def colorWipe(strip, color, brightness, range_start, range_end, wait_ms=5):
