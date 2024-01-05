@@ -27,7 +27,7 @@ def set_color():
     green = int(data.get('green'))
     blue = int(data.get('blue'))
     brightness = int(data.get('brightness'))
-    if data.get('is_on') == 'false':
+    if data.get('is_on') == 'false' or data.get('is_on') == False or data.get('is_on') == None:
         is_on = False
     else:
         is_on = True
