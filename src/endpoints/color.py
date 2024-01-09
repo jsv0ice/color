@@ -136,6 +136,10 @@ def set_color():
 def colorWipe(strip, new_color, new_brightness, range_start, range_end, wait_ms=5):
     with current_app.app_context():
         for i in range(strip.numPixels()):
+            try:
+                address_record = Address.query.filter_by(id=i).first()
+            except:
+                address_record = None
             # Check if the current pixel is within the specified range
             if range_start <= i <= range_end:
                 # Use the new color and brightness for pixels in the range
@@ -143,7 +147,6 @@ def colorWipe(strip, new_color, new_brightness, range_start, range_end, wait_ms=
                 brightness_to_set = new_brightness
             else:
                 # Retrieve the color and brightness from the Address table for pixels outside the range
-                address_record = Address.query.filter_by(id=i).first()
                 if address_record:
                     color_to_set = Color(address_record.red, address_record.green, address_record.blue)
                     brightness_to_set = address_record.brightness
