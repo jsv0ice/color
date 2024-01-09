@@ -149,8 +149,8 @@ def colorWipe(strip, new_color, new_brightness, range_start, range_end, wait_ms=
 
             # Set color and brightness for the pixel
             strip.setPixelColor(i, color_to_set)
-            strip.setBrightness(brightness_to_set)
-            strip.show()
+            strip.setBrightness(i, brightness_to_set)
+        strip.show()
         
         saveStateToDatabase()
 
