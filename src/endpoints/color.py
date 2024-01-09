@@ -73,8 +73,8 @@ def set_color():
 
     # Apply the color to the LED strip
     if is_on is True:
-        current_app.logger.info("current_state: " + str(current_state.red) + ", " + str(current_state.green) + ", " + str(current_state.blue) + ", " + str(current_state.brightness)
-            + ", " + str(entity.start_addr) + ", " + str(entity.end_addr))
+        current_app.logger.info("current_state: red: " + str(current_state.red) + ", green: " + str(current_state.green) + ", blue: " + str(current_state.blue) + ", brightness: " + str(current_state.brightness)
+            + ", start_addr: " + str(entity.start_addr) + ", end_addr: " + str(entity.end_addr))
         colorWipe(current_app.strip, Color(current_state.red, current_state.green, current_state.blue), 
                   int(current_state.brightness), entity.start_addr, entity.end_addr)
     if is_on is False:
