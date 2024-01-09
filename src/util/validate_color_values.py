@@ -21,8 +21,8 @@ def validate_color_values(red, green, blue, brightness):
         return False, "Red, Green, Blue values must be between 0 and 255"
 
     # Check if brightness is within the permissible range (1-255)
-    if not 1 <= brightness <= 100:
-        return False, "Brightness must be between 1 and 100"
+    if not 0 <= brightness <= 100:
+        return False, "Brightness must be between 0 and 100"
 
     # If all checks pass, return True with an empty error message
     return True, ""
