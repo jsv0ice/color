@@ -33,7 +33,7 @@ def set_color():
     if not entity:
         return jsonify({"error": "Entity not found"}), 404
     
-    current_app.logger.info(data)
+    current_app.logger.info(data.get('brightness'))
         
     try:
         red = int(data.get('red'))
