@@ -105,7 +105,7 @@ def set_color():
     if [red, green, blue, brightness]:
         valid, message = validate_color_values(red, green, blue, brightness)
         if not valid:
-            return jsonify({"error": message}), 400
+            return jsonify({"error": message + " values: red: " + str(red) + " green: " + str(green) + " blue: " + str(blue) + " brightness: " + str(brightness)}), 400
 
     # Check current state before updating
     current_state = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first()
