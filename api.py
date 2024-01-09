@@ -28,6 +28,7 @@ def initialize_led_strip():
 if __name__ == '__main__':
     with app.app_context():
         app.strip = initialize_led_strip()
+        app.pixel_states = [{'red': 0, 'green': 0, 'blue': 0, 'brightness': 0} for _ in range(app.strip.numPixels())]
 
     # Run the Flask app
     app.run(debug=True, host='0.0.0.0')
