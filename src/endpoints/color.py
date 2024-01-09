@@ -50,12 +50,12 @@ def toggle_light():
 
     # Apply the color to the LED strip
     if is_on is True:
-        print("current_state: " + str(current_state.red) + ", " + str(current_state.green) + ", " + str(current_state.blue) + ", " + str(current_state.brightness)
+        current_app.logger.info("current_state: " + str(current_state.red) + ", " + str(current_state.green) + ", " + str(current_state.blue) + ", " + str(current_state.brightness)
             + ", " + str(entity.start_addr) + ", " + str(entity.end_addr))
         colorWipe(current_app.strip, Color(current_state.red, current_state.green, current_state.blue), 
                   int(current_state.brightness), entity.start_addr, entity.end_addr)
     if is_on is False:
-        print("turning off: " + str(entity.start_addr) + ", " + str(entity.end_addr))
+        current_app.logger.info("turning off: " + str(entity.start_addr) + ", " + str(entity.end_addr))
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
 
     return jsonify({"success": "Light state toggled successfully", "is_on": is_on, "start_addr": entity.start_addr, "end_addr": entity.end_addr, "entity_id": entity.id}), 200
