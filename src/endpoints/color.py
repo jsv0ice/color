@@ -90,10 +90,11 @@ def set_color():
         blue = int(data.get('blue'))
         brightness = int(data.get('brightness'))
     except TypeError:
-        red = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first().red
-        green = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first().green
-        blue = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first().blue
-        brightness = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first().brightness
+        existing = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first()
+        red = existing.red
+        green = existing.green
+        blue = existing.blue
+        brightness = existing.brightness
 
     if data.get('is_on') == 'false' or data.get('is_on') == False or data.get('is_on') == None:
         is_on = False
@@ -101,9 +102,10 @@ def set_color():
         is_on = True
 
     # Validate color values
-    valid, message = validate_color_values(red, green, blue, brightness)
-    if not valid:
-        return jsonify({"error": message}), 400
+    if [red, green, blue, brightness]:
+        valid, message = validate_color_values(red, green, blue, brightness)
+        if not valid:
+            return jsonify({"error": message}), 400
 
     # Check current state before updating
     current_state = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first()
@@ -120,9 +122,13 @@ def set_color():
         db.session.commit()
 
     # Apply the color to the LED strip
-    if is_on:
-        colorWipe(current_app.strip, Color(red, green, blue), int(brightness), entity.start_addr, entity.end_addr)
-    else:
+    if is_on is True:
+        current_app.logger.info("current_state: " + str(current_state.red) + ", " + str(current_state.green) + ", " + str(current_state.blue) + ", " + str(current_state.brightness)
+            + ", " + str(entity.start_addr) + ", " + str(entity.end_addr))
+        colorWipe(current_app.strip, Color(current_state.red, current_state.green, current_state.blue), 
+                  int(current_state.brightness), entity.start_addr, entity.end_addr)
+    if is_on is False:
+        current_app.logger.info("turning off: " + str(entity.start_addr) + ", " + str(entity.end_addr))
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
     return jsonify({"success": "Color updated successfully"}), 200
 
