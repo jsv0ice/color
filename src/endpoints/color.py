@@ -49,13 +49,13 @@ def toggle_light():
         db.session.commit()
 
     # Apply the color to the LED strip
-    if is_on:
+    if is_on is True:
         colorWipe(current_app.strip, Color(current_state.red, current_state.green, current_state.blue), 
                   int(current_state.brightness), entity.start_addr, entity.end_addr)
-    else:
+    if is_on is False:
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
 
-    return jsonify({"success": "Light state toggled successfully", "is_on": is_on}), 200
+    return jsonify({"success": "Light state toggled successfully", "is_on": is_on, "start_addr": entity.start_addr, "end_addr": entity.end_addr, "entity_id": entity.id}), 200
 
 
 @color_bp.route('/color/', methods=['POST'])
