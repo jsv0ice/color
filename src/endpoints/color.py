@@ -10,57 +10,6 @@ from ..database import db
 
 color_bp = Blueprint('color', __name__)
 
-@color_bp.route('/toggle/', methods=['POST'])
-def toggle_light():
-    """
-    Endpoint to toggle the light state of a specified entity.
-
-    Expects a JSON payload with the key 'entity'.
-
-    Returns:
-    Flask Response: JSON response indicating the success or failure of the toggle operation.
-    """
-
-    data = request.json
-    entity_id = data.get('entity')
-
-    # Validate entity presence
-    if entity_id is None:
-        return jsonify({"error": "Missing entity"}), 400
-
-    # Fetch the entity by its ID
-    entity = Entity.query.filter_by(id=entity_id).first()
-    if not entity:
-        return jsonify({"error": "Entity not found"}), 404
-
-    # Fetch the current light state
-    current_state = LightState.query.filter_by(entity_id=entity.id).order_by(LightState.timestamp.desc()).first()
-    if not current_state:
-        return jsonify({"error": "No light state found for entity"}), 404
-
-    # Toggle the light state
-    is_on = not current_state.is_on
-
-    # Update light state for entity
-    with current_app.app_context():
-        new_state = LightState(entity_id=entity.id, red=current_state.red, green=current_state.green, 
-                               blue=current_state.blue, brightness=current_state.brightness, is_on=is_on)
-        db.session.add(new_state)
-        db.session.commit()
-
-    # Apply the color to the LED strip
-    if is_on is True:
-        current_app.logger.info("current_state: " + str(current_state.red) + ", " + str(current_state.green) + ", " + str(current_state.blue) + ", " + str(current_state.brightness)
-            + ", " + str(entity.start_addr) + ", " + str(entity.end_addr))
-        colorWipe(current_app.strip, Color(current_state.red, current_state.green, current_state.blue), 
-                  int(current_state.brightness), entity.start_addr, entity.end_addr)
-    if is_on is False:
-        current_app.logger.info("turning off: " + str(entity.start_addr) + ", " + str(entity.end_addr))
-        colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
-
-    return jsonify({"success": "Light state toggled successfully", "is_on": is_on, "start_addr": entity.start_addr, "end_addr": entity.end_addr, "entity_id": entity.id}), 200
-
-
 @color_bp.route('/color/', methods=['POST'])
 def set_color():
     """
@@ -105,6 +54,7 @@ def set_color():
     if [red, green, blue, brightness]:
         valid, message = validate_color_values(red, green, blue, brightness)
         if not valid:
+            current_app.logger.error("error": message + " values: red: " + str(red) + " green: " + str(green) + " blue: " + str(blue) + " brightness: " + str(brightness))
             return jsonify({"error": message + " values: red: " + str(red) + " green: " + str(green) + " blue: " + str(blue) + " brightness: " + str(brightness)}), 400
 
     # Check current state before updating
