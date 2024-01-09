@@ -126,9 +126,15 @@ def set_color():
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
     return jsonify({"success": "Color updated successfully"}), 200
 
+#def colorWipe(strip, color, brightness, range_start, range_end, wait_ms=5):
+#    for i in range(strip.numPixels()):
+#        if i >= range_start and i <= range_end:
+#            strip.setPixelColor(i, color)
+#            strip.setBrightness(brightness)
+#            strip.show()
+
 def colorWipe(strip, color, brightness, range_start, range_end, wait_ms=5):
-    for i in range(strip.numPixels()):
-        if i >= range_start and i <= range_end:
-            strip.setPixelColor(i, color)
-            strip.setBrightness(brightness)
-            strip.show()
+    for i in range(range_start, range_end + 1):  # Only iterate over the specified range
+        strip.setPixelColor(i, color)
+        strip.setBrightness(brightness)
+        strip.show()
