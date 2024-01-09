@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, current_app
 from rpi_ws281x import Color
 from ..util.update_light_state_for_entity_and_children import update_light_state_for_entity_and_children
 from ..util.validate_color_values import validate_color_values
-from ..models import Entity, LightState
+from ..models import Entity, LightState, Address
 from ..database import db
 
 
@@ -133,8 +133,41 @@ def set_color():
 #            strip.setBrightness(brightness)
 #            strip.show()
 
-def colorWipe(strip, color, brightness, range_start, range_end, wait_ms=5):
-    for i in range(range_start, range_end + 1):  # Only iterate over the specified range
-        strip.setPixelColor(i, color)
-        strip.setBrightness(brightness)
-        strip.show()
+def colorWipe(strip, new_color, new_brightness, range_start, range_end, wait_ms=5):
+    with current_app.app_context():
+        for i in range(strip.numPixels()):
+            # Check if the current pixel is within the specified range
+            if range_start <= i <= range_end:
+                # Use the new color and brightness for pixels in the range
+                color_to_set = new_color
+                brightness_to_set = new_brightness
+            else:
+                # Retrieve the color and brightness from the Address table for pixels outside the range
+                address_record = Address.query.filter_by(id=i).first()
+                if address_record:
+                    color_to_set = Color(address_record.red, address_record.green, address_record.blue)
+                    brightness_to_set = address_record.brightness
+                else:
+                    # Default to off if no record is found
+                    color_to_set = Color(0, 0, 0)
+                    brightness_to_set = 0
+
+            # Set color and brightness for the pixel
+            strip.setPixelColor(i, color_to_set)
+            strip.setBrightness(brightness_to_set)
+            strip.show()
+
+            # Update the Address table with new values for pixels in the range
+            if range_start <= i <= range_end:
+                if address_record:
+                    address_record.red = new_color.r
+                    address_record.green = new_color.g
+                    address_record.blue = new_color.b
+                    address_record.brightness = new_brightness
+                else:
+                    # Create a new record if it doesn't exist
+                    new_address = Address(id=i, red=new_color.r, green=new_color.g, blue=new_color.b, brightness=new_brightness)
+                    db.session.add(new_address)
+
+        db.session.commit()
+

@@ -19,3 +19,10 @@ class Entity(db.Model):
 
     # Define the relationship (self-referential)
     parent = db.relationship('Entity', remote_side=[id], backref=db.backref('children', lazy='dynamic'))
+
+class Address(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    red = db.Column(db.Integer, default=0)
+    green = db.Column(db.Integer, default=0)
+    blue = db.Column(db.Integer, default=0)
+    brightness = db.Column(db.Integer, default=0)

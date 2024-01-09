@@ -1,0 +1,65 @@
+[
+    {
+        "end_addr": 100,
+        "id": 1,
+        "name": "World Map",
+        "parent_id": null,
+        "start_addr": 1,
+    },
+    {
+        "end_addr": 8,
+        "id": 2,
+        "name": "South America",
+        "parent_id": 1,
+        "start_addr": 1,
+    },
+    {
+        "end_addr": 28,
+        "id": 3,
+        "name": "North America",
+        "parent_id": 1,
+        "start_addr": 8,
+    },
+    {
+        "end_addr": 32,
+        "id": 4,
+        "name": "Greenland",
+        "parent_id": 1,
+        "start_addr": 29,
+    },
+    {
+        "end_addr": 35,
+        "id": 5,
+        "name": "Europe",
+        "parent_id": 1,
+        "start_addr": 33,
+    },
+    {
+        "end_addr": 45,
+        "id": 6,
+        "name": "Africa",
+        "parent_id": 1,
+        "start_addr": 36,
+    },
+    {
+        "end_addr": 80,
+        "id": 7,
+        "name": "Asia",
+        "parent_id": 1,
+        "start_addr": 46,
+    },
+    {
+        "end_addr": 86,
+        "id": 8,
+        "name": "Australia",
+        "parent_id": 1,
+        "start_addr": 81,
+    },
+    {
+        "end_addr": 100,
+        "id": 9,
+        "name": "Antarctica",
+        "parent_id": 1,
+        "start_addr": 87,
+    }
+]
