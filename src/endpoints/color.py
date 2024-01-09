@@ -32,6 +32,8 @@ def set_color():
     entity = Entity.query.filter_by(id=entity_id).first()
     if not entity:
         return jsonify({"error": "Entity not found"}), 404
+    
+    current_app.logger.info(data)
         
     try:
         red = int(data.get('red'))
