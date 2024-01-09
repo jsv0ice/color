@@ -55,7 +55,7 @@ def toggle_light():
     else:
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
 
-    return jsonify({"success": "Light state toggled successfully"}), 200
+    return jsonify({"success": "Light state toggled successfully", "is_on": is_on}), 200
 
 
 @color_bp.route('/color/', methods=['POST'])
