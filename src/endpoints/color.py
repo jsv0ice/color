@@ -14,12 +14,12 @@ color_bp = Blueprint('color', __name__)
 
 @socketio.on('connect', namespace='/ws-color')
 def handle_connect():
-    print("Client connected")
+    current_app.logger.info(("Client connected")
     # Additional logic as needed (e.g., authentication, logging)
 
 @socketio.on('discconnect', namespace='/ws-color')
 def handle_discconnect():
-    print("Client discconnected")
+    current_app.logger.info(("Client discconnected")
     # Additional logic as needed (e.g., authentication, logging)
 
 
