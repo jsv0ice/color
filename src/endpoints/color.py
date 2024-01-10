@@ -12,6 +12,17 @@ from ..socket import socketio
 
 color_bp = Blueprint('color', __name__)
 
+@socketio.on('connect', namespace='/ws-color')
+def handle_connect():
+    print("Client connected")
+    # Additional logic as needed (e.g., authentication, logging)
+
+@socketio.on('discconnect', namespace='/ws-color')
+def handle_discconnect():
+    print("Client discconnected")
+    # Additional logic as needed (e.g., authentication, logging)
+
+
 @socketio.on('set_color', namespace='/ws-color')
 def handle_set_color(data):
     """
