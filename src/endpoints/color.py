@@ -82,7 +82,7 @@ def set_color():
     if is_on is False:
         current_app.logger.info("turning off: " + str(entity.start_addr) + ", " + str(entity.end_addr))
         colorWipe(current_app.strip, Color(0, 0, 0), 0, entity.start_addr, entity.end_addr)
-    return jsonify({"success": "Color updated successfully"}), 200
+    return jsonify({"success": "Color updated successfully", "entity_id": entity.id, "red": red, "green": green, "blue": blue, "brightness": brightness, "is_on": is_on}), 200
 
 #def colorWipe(strip, color, brightness, range_start, range_end, wait_ms=5):
 #    for i in range(strip.numPixels()):
