@@ -31,4 +31,4 @@ if __name__ == '__main__':
         app.pixel_states = [{'red': 0, 'green': 0, 'blue': 0, 'brightness': 0} for _ in range(app.strip.numPixels())]
 
     # Run the Flask app
-    socketio.run(debug=True, host='0.0.0.0')
+    socketio.run(app,debug=True, host='0.0.0.0')
