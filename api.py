@@ -3,7 +3,7 @@ from src import create_app
 from flask import Flask ,current_app
 from rpi_ws281x import PixelStrip, ws
 from flask_socketio import SocketIO
-from .src.socket import socketio
+from src.socket import socketio
 
 app = create_app()
 
