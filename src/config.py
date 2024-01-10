@@ -14,4 +14,3 @@ class Config:
     LED_STRIP_TYPES = 'WS2811_STRIP_GRB'
     SQLALCHEMY_DATABASE_URI = 'sqlite:///light.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = 'insert_secret_key_here'
