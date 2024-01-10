@@ -1,9 +1,9 @@
 
 from src import create_app
-from src.endpoints.entity import entity_bp
-from src.endpoints.color import color_bp
 from flask import Flask ,current_app
 from rpi_ws281x import PixelStrip, ws
+from flask_socketio import SocketIO
+from .src.socket import socketio
 
 app = create_app()
 
@@ -31,4 +31,4 @@ if __name__ == '__main__':
         app.pixel_states = [{'red': 0, 'green': 0, 'blue': 0, 'brightness': 0} for _ in range(app.strip.numPixels())]
 
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0')
+    socketio.run(debug=True, host='0.0.0.0')
