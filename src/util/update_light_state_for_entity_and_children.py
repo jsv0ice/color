@@ -28,8 +28,8 @@ def update_light_state_for_entity_and_children(entity_id, red, green, blue, brig
                                  current_state.red != red,
                                  current_state.green != green,
                                  current_state.blue != blue,
-                                 current_state.brightness != int(brightness/2.55)]):
-        new_state = LightState(entity_id=entity.id, is_on=is_on, red=red, green=green, blue=blue, brightness=int(brightness/2.55))
+                                 current_state.brightness != int(brightness)]):
+        new_state = LightState(entity_id=entity.id, is_on=is_on, red=red, green=green, blue=blue, brightness=int(brightness))
         db.session.add(new_state)
 
     # Recursively update the light state of all child entities
